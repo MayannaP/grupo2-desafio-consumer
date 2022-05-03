@@ -15,9 +15,9 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
-public class DownloadFile {
+public class File {
 	
-	public static ResponseInputStream<GetObjectResponse> getFile(String keyName) throws IOException { 
+	public static ArrayList<Produto> getProductsFromS3File(String fileName) throws IOException { 
 		String bucketName = "grupo2-bucket";
 		
 		
@@ -45,17 +45,12 @@ public class DownloadFile {
 		
 		GetObjectRequest request = GetObjectRequest.builder()
 				.bucket(bucketName)
-				.key(keyName)
+				.key(fileName)
 				.build();
 	
 		ResponseInputStream<GetObjectResponse> inputStream = client.getObject(request); 
 		
-		return inputStream;
-	}
-	
-	public static ArrayList<Produto> readFileAndCreateObject(ResponseInputStream<GetObjectResponse> file) throws IOException {
-		
-		BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+		BufferedReader reader = new BufferedReader((new InputStreamReader(inputStream)));
 		
 		String line;   
 		List<Produto> pList = new ArrayList<Produto>(); 
@@ -69,6 +64,7 @@ public class DownloadFile {
 		reader.close();
 		return (ArrayList<Produto>) pList; 
 	}
+	
 
 	
 }
