@@ -3,6 +3,8 @@ package desafio.grupo2.services;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import desafio.grupo2.models.Produto;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
@@ -15,9 +17,9 @@ import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
 public class DownloadFile {
 	
-	public static ResponseInputStream<GetObjectResponse> getFile() throws IOException { 
+	public static ResponseInputStream<GetObjectResponse> getFile(String keyName) throws IOException { 
 		String bucketName = "grupo2-bucket";
-		String keyName = "Banana-e-maca.csv";
+		
 		
 		AwsCredentialsProvider credentialsProvider = new AwsCredentialsProvider() {
 	        @Override
@@ -48,26 +50,24 @@ public class DownloadFile {
 	
 		ResponseInputStream<GetObjectResponse> inputStream = client.getObject(request); 
 		
-		inputStream.close();
 		return inputStream;
 	}
 	
-
-	
-	public static Produto readFileAndCreateObject(ResponseInputStream<GetObjectResponse> file) throws IOException {
+	public static ArrayList<Produto> readFileAndCreateObject(ResponseInputStream<GetObjectResponse> file) throws IOException {
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file));
 		
-		String line;            
-		Produto p = null; 
+		String line;   
+		List<Produto> pList = new ArrayList<Produto>(); 
 		while ((line = reader.readLine()) != null) {            
 			if (!line.contains("id")) { //Para ignorar a primeira linha
 				String[] productData = line.split(","); 
-				p = new Produto(0, productData[0], productData[1], 0, line);
-				System.out.println(p.getDescricao());	 
+				Produto p = new Produto(productData[0], productData[1], 2);
+				pList.add(p);
 			} 
 		}
-		return p; 
+		reader.close();
+		return (ArrayList<Produto>) pList; 
 	}
 
 	

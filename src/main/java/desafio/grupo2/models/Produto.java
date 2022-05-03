@@ -1,30 +1,31 @@
 package desafio.grupo2.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "produtos")
+@Table(name = "products")
 public class Produto {
 	
 	@Id
-	@Column(name = "id")
-	private int id; 
-	@Column(name = "nome")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id; 
+	@Column(name = "name")
 	private String nome; 
-	@Column(name = "descricao")
+	@Column(name = "description")
 	private String descricao; 
-	@Column(name = "quantidade")
-	private int quantidade; 
-	@Column(name = "data")
+	@Column(name = "quantity")
+	private Integer quantidade; 
+	@Column(name = "date")
 	private String data;
-	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getNome() {
@@ -39,10 +40,10 @@ public class Produto {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public int getQuantidade() {
+	public Integer getQuantidade() {
 		return quantidade;
 	}
-	public void setQuantidade(int quantidade) {
+	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
 	public String getData() {
@@ -51,12 +52,14 @@ public class Produto {
 	public void setData(String data) {
 		this.data = data;
 	}
-	public Produto(int id, String nome, String descricao, int quantidade, String data) {
+	public Produto(String nome, String descricao, Integer quantidade) {
 		super();
-		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.quantidade = quantidade;
-		this.data = data;
-	} 
+	}
+	public Produto() {
+		// TODO Auto-generated constructor stub
+	}
+	
 }
