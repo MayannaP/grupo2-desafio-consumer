@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+
+import desafio.grupo2.dao.ProdutoDAO;
 import desafio.grupo2.models.Produto;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
@@ -63,8 +67,17 @@ public class File {
 		}
 		reader.close();
 		return (ArrayList<Produto>) pList; 
+	}	
+	
+	
+	@Autowired
+	ProdutoDAO dao;
+	
+	public ResponseEntity<String> saveProductsToDB(String fileName) throws IOException { 
+		
+		ArrayList<Produto> p = File.getProductsFromS3File(fileName);
+		dao.saveAll(p);
+		
+		return ResponseEntity.ok("Produto cadastrado no DB.");
 	}
-	
-
-	
 }
