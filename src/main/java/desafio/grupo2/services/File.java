@@ -64,7 +64,7 @@ public class File {
 		String line;   
 		List<Produto> pList = new ArrayList<Produto>(); 
 		while ((line = reader.readLine()) != null) {            
-			if (!line.contains("Nome")) { //Para ignorar a primeira linha
+			if (!line.contains("Nome")) { 
 				String[] productData = line.split(","); 
 				Double preco = Double.parseDouble(productData[3]);
 				Integer quantity = Integer.parseInt(productData[2]);

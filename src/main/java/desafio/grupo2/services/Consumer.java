@@ -21,7 +21,7 @@ public class Consumer {
 	
 	public void readMessage(String groupId) throws InterruptedException, ExecutionException, IOException{
 		var consumer = new KafkaConsumer<String,String>(properties(groupId));
-        consumer.subscribe(Collections.singletonList("UM_TOPICO"));
+        consumer.subscribe(Collections.singletonList(System.getenv("KAFKA_TOPIC")));
         while (true) {
             var products = consumer.poll(Duration.ofMillis(500));
             for (ConsumerRecord<String, String> product: products) {
@@ -37,7 +37,7 @@ public class Consumer {
 	private static Properties properties(String groupId) { 
 		var properties = new Properties(); 
 		
-		properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092"); 
+		properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, System.getenv("KAFKA_HOST")); 
 		properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 		properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 	    properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, groupId);
